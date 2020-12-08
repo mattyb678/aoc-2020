@@ -15,12 +15,7 @@ class Day4 : Day {
     override fun asInt(): Int = 4
 
     private fun List<String>.toPassports(): Sequence<Map<String, String>> {
-        return this.mapIndexedNotNull { i, s -> i.takeIf { s == "" } }
-            .let { listOf(-1) + it + this.size }
-            .asSequence()
-            .zipWithNext { from, upto -> this.subList(from + 1, upto) }
-            .map { it.joinToString(" ") }
-            .map { it.split(" ") }
+        return this.group()
             .map { it.map { s -> s.split(":") }.associate { list -> list[0] to list[1] } }
     }
 

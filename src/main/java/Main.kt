@@ -48,3 +48,12 @@ fun main(args: Array<String>) {
 
 fun readFileAsLines(fileName: String): List<String>
         = File(fileName).useLines { it.toList() }
+
+fun List<String>.group(): Sequence<List<String>> {
+    return this.mapIndexedNotNull { i, s -> i.takeIf { s == "" } }
+        .let { listOf(-1) + it + this.size }
+        .asSequence()
+        .zipWithNext { from, upto -> this.subList(from + 1, upto) }
+        .map { it.joinToString(" ") }
+        .map { it.split(" ") }
+}
